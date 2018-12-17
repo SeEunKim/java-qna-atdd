@@ -133,4 +133,18 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
         ResponseEntity<String> response = delete(basicAuthTemplate());
         softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FOUND);
     }
+
+    @Test
+    public void show_login() {
+        ResponseEntity<String> response = basicAuthTemplate().getForEntity(String.format("/questions/%d/show", 1), String.class);
+        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        softly.assertThat(response.getHeaders().getLocation().getPath().startsWith("/qna/show"));
+        log.debug("body : {}", response.getBody());
+    }
+
+    @Test
+    public void show_no_login() {
+        ResponseEntity<String> response = template().getForEntity(String.format("/questions/%d/show", 1), String.class);
+        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
 }

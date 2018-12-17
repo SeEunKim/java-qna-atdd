@@ -7,6 +7,7 @@ import codesquad.security.LoginUser;
 import codesquad.service.QnaService;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -52,5 +53,11 @@ public class QuestionController {
             e.printStackTrace();
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}/show")
+    public String show(@LoginUser User loginUser, @PathVariable Long id, Model model) {
+        model.addAttribute("question", qnaService.findById(loginUser, id));
+        return "redirect:/qna/show";
     }
 }
