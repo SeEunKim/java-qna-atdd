@@ -6,10 +6,7 @@ import codesquad.security.LoginUser;
 import codesquad.service.QnaService;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -24,7 +21,7 @@ public class QuestionController {
     private QnaService qnaService;
 
     @GetMapping("/form")
-    public String questionsForm() {
+    public String questionsForm(@LoginUser User loginUser) {
         return "/qna/form";
     }
 
@@ -35,8 +32,14 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}/form")
-    public String updateForm(@LoginUser User loginUser, @PathVariable Long id, Question question) {
-        qnaService.findById(id);
+    public String updateForm(@LoginUser User loginUser, @PathVariable Long id) {
+        qnaService.findById(loginUser, id);
         return "redirect:/qna/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String update(@LoginUser User loginUser, @PathVariable Long id, Question updateQuestion) {
+        qnaService.update(loginUser, id, updateQuestion);
+        return String.format("redirect:/questions/%d", id);
     }
 }

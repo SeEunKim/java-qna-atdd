@@ -2,6 +2,7 @@ package codesquad.web;
 
 import codesquad.domain.User;
 import codesquad.domain.UserRepository;
+import codesquad.service.UserService;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
