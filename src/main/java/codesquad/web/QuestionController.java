@@ -1,5 +1,6 @@
 package codesquad.web;
 
+import codesquad.CannotDeleteException;
 import codesquad.domain.Question;
 import codesquad.domain.User;
 import codesquad.security.LoginUser;
@@ -41,5 +42,15 @@ public class QuestionController {
     public String update(@LoginUser User loginUser, @PathVariable Long id, Question updateQuestion) {
         qnaService.update(loginUser, id, updateQuestion);
         return String.format("redirect:/questions/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@LoginUser User loginUser, @PathVariable Long id) {
+        try {
+            qnaService.deleteQuestion(loginUser, id);
+        } catch (CannotDeleteException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/";
     }
 }

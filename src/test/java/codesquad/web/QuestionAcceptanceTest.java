@@ -118,7 +118,7 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
                         .urlEncodeForm()
                         .delete()
                         .build();
-        return template.postForEntity(String.format("/quesitons/%d", 1), request, String.class);
+        return template.postForEntity(String.format("/questions/%d", 1), request, String.class);
     }
 
     @Test
@@ -132,7 +132,5 @@ public class QuestionAcceptanceTest extends AcceptanceTest {
     public void delete() throws Exception {
         ResponseEntity<String> response = delete(basicAuthTemplate());
         softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FOUND);
-        softly.assertThat(questionRepository.findById(1L).filter(x -> !x.isDeleted()).);
     }
-
 }

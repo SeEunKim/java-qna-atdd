@@ -42,7 +42,6 @@ public class QnaService {
 
     @Transactional
     public Question update(User loginUser, long id, Question updatedQuestion) {
-        // TODO 수정 기능 구현
         Question original = questionRepository.findById(id)
                 .orElseThrow(UnAuthorizedException::new);
 
@@ -52,7 +51,10 @@ public class QnaService {
 
     @Transactional
     public void deleteQuestion(User loginUser, long questionId) throws CannotDeleteException {
-        // TODO 삭제 기능 구현
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(UnAuthorizedException::new);
+
+        question.delete(loginUser);
     }
 
     public Iterable<Question> findAll() {
