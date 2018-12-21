@@ -8,6 +8,9 @@ public class QuestionTest extends BaseTest {
     public static final User JAVAJIGI = new User(1L, "javajigi", "password", "name", "javajigi@slipp.net");
     public static final User SANJIGI = new User(2L, "sanjigi", "password", "name", "sanjigi@slipp.net");
 
+    public static Question newQuestion(User writer) {
+        return new Question(writer, "newTitle", "newContents");
+    }
 
     private Question q1 = new Question (JAVAJIGI, "title1", "contents1");
     private Question q2 = new Question (SANJIGI, "title2", "contents2");
