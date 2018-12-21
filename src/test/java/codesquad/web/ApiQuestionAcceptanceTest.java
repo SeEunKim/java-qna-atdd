@@ -20,11 +20,8 @@ public class ApiQuestionAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void create() throws Exception {
-        Question newQuestion = new Question("title", "contents");
-        ResponseEntity<String> response = basicAuthTemplate(RED).postForEntity("/api/questions", newQuestion, String.class);
-        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-
-        String location = response.getHeaders().getLocation().getPath();
+        Question newQuestion = new Question("title", "contents");;
+        String location = createResourceLogin("/api/questions", newQuestion, RED);
         Question dbQuestion = template().getForObject(location, Question.class);
         softly.assertThat(dbQuestion).isNotNull();
         log.debug("dbQuestion : {}", dbQuestion);
@@ -41,9 +38,8 @@ public class ApiQuestionAcceptanceTest extends AcceptanceTest {
     @Test
     public void update() throws Exception {
         Question newQuestion = new Question("title", "contents");
-        ResponseEntity<Void> response = basicAuthTemplate().postForEntity("/api/questions", newQuestion, Void.class);
-        String location = response.getHeaders().getLocation().getPath();
-        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        String location = createResourceLogin("/api/questions", newQuestion, defaultUser());
+
         Question original = template().getForObject(location, Question.class);
 
         Question updateQuestion = new Question(original.getWriter(), original.getTitle(), "updateContents");
@@ -60,9 +56,8 @@ public class ApiQuestionAcceptanceTest extends AcceptanceTest {
     @Test
     public void update_no_login() {
         Question newQuestion = new Question("title", "contents");
-        ResponseEntity<Void> response = basicAuthTemplate().postForEntity("/api/questions", newQuestion, Void.class);
-        String location = response.getHeaders().getLocation().getPath();
-        softly.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        String location = createResourceLogin("/api/questions", newQuestion, defaultUser());
+
         Question original = template().getForObject(location, Question.class);
 
         Question updateQuestion = new Question(original.getWriter(), original.getTitle(), "updateContents");
@@ -72,7 +67,6 @@ public class ApiQuestionAcceptanceTest extends AcceptanceTest {
         softly.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         log.debug("update_no_login() response : {}", responseEntity.getBody());
     }
-
 
     @Test
     public void update_other_writer() throws Exception {

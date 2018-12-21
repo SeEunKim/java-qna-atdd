@@ -26,12 +26,7 @@ public class ApiQuestionController {
 
     @PostMapping("")
     public ResponseEntity<Void> create(@LoginUser User loginUser, @Valid @RequestBody Question question) {
-
-        log.debug("##create, User : {}, Question : {}", loginUser, question);
-
         Question savedQuestion = qnaService.create(loginUser, question);
-        log.debug("savedQuestion : {}", savedQuestion);
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/api/questions/" + savedQuestion.getId()));
@@ -44,9 +39,10 @@ public class ApiQuestionController {
     }
 
     @PutMapping("/{id}")
-    public Question update(@LoginUser User loginUser, @PathVariable long id, @Valid @RequestBody Question updateQuestion) {
+    public Question update(@LoginUser User loginUser, @PathVariable long id,
+                           @Valid @RequestBody Question updateQuestion) {
 
-        return qnaService.update(loginUser, id, updateQuestion);
+        return qnaService.updateQuestion(loginUser, id, updateQuestion);
 
     }
 }
