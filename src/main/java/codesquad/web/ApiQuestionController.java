@@ -43,6 +43,5 @@ public class ApiQuestionController {
                            @Valid @RequestBody Question updateQuestion) {
 
         return qnaService.updateQuestion(loginUser, id, updateQuestion);
-
     }
 }
