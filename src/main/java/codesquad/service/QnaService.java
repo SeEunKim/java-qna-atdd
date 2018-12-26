@@ -64,7 +64,8 @@ public class QnaService {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(UnAuthorizedException::new);
 
-        question.delete(loginUser);
+        List<DeleteHistory> histories = question.delete(loginUser);
+        deleteHistoryService.saveAll(histories);
         return question;
     }
 
