@@ -1,5 +1,6 @@
 package codesquad.domain;
 
+import codesquad.CannotDeleteException;
 import codesquad.UnAuthorizedException;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,19 +33,19 @@ public class QuestionTest extends BaseTest {
     }
 
     @Test
-    public void delete_no_answer() {
+    public void delete_no_answer() throws CannotDeleteException {
         RED_QUESTION.delete(RED);
         softly.assertThat(RED_QUESTION.isDeleted()).isTrue();
     }
 
     @Test
-    public void delete_owner_answer() {
+    public void delete_owner_answer() throws CannotDeleteException {
         UNHEE_QUESTION.delete(UNHEE);
         softly.assertThat(UNHEE_QUESTION.isDeleted()).isTrue();
     }
 
     @Test(expected = UnAuthorizedException.class)
-    public void delete_writer_other_answer() {
+    public void delete_writer_other_answer() throws CannotDeleteException {
         UNHEE_QUESTION.delete(RED);
         softly.assertThat(UNHEE_QUESTION.isDeleted()).isFalse();
     }
